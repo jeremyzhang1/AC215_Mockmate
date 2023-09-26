@@ -1,0 +1,4 @@
+[core]
+    remote = src/data-versioning/leetcode_dataset_embeddings
+['remote "src/data-versioning/leetcode_dataset_embeddings"']
+    url = gs://mockmate-app-data/dvc_store
