@@ -39,7 +39,7 @@ def download_processed_leetcode_data(bucket_name, dataset_prep_folder):
             blob.download_to_filename(local_file_path)
 
 
-def create_and_save_vector_embeddings(file):
+def create_and_save_vector_embeddings(file, count):
     # read the json file
     with open(file, "r") as read_file:
         leetcode_json = json.load(read_file)
@@ -49,7 +49,7 @@ def create_and_save_vector_embeddings(file):
         problems = []
         solutions = []
 
-        for problem in leetcode_json:
+        for problem in leetcode_json[:count]:
             problem_dict = {key: problem[key] for key in [
                 "id",
                 "slug",
@@ -90,7 +90,7 @@ def create_and_save_vector_embeddings(file):
                         protocol=pickle.HIGHEST_PROTOCOL)
 
 
-def download_data():
+def download_data(count):
     # clear dataset folders
     make_local_dataset_folders(dataset_prep_folder, dataset_result_folder)
 
@@ -100,12 +100,12 @@ def download_data():
     # organize annotation with images
     annotation_files = glob.glob(os.path.join(dataset_prep_folder, "*"))
     for annotation_file in annotation_files:
-        create_and_save_vector_embeddings(annotation_file)
+        create_and_save_vector_embeddings(annotation_file, count)
         
 
 def main(args=None):
     if args.download:
-        download_data()
+        download_data(args.count)
 
 
 if __name__ == "__main__":
@@ -128,6 +128,14 @@ if __name__ == "__main__":
         "--download",
         action="store_true",
         help="Download labeled data from a GCS Bucket",
+    )
+
+    parser.add_argument(
+        "-c",
+        "--count",
+        type=int,
+        action="embeddings_count",
+        help="number of problems to generate vector embeddings for",
     )
 
     args = parser.parse_args()
