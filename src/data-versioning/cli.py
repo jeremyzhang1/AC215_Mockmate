@@ -134,7 +134,6 @@ if __name__ == "__main__":
         "-c",
         "--count",
         type=int,
-        action="embeddings_count",
         help="number of problems to generate vector embeddings for",
     )
 
