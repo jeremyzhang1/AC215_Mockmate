@@ -48,4 +48,4 @@ ADD --chown=app:app . /app
 RUN git config --global --add safe.directory /app
 
 # Entry point
-ENTRYPOINT [".", "venv/bin/activate"]
+ENTRYPOINT ["/bin/bash"]
