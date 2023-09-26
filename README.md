@@ -110,7 +110,13 @@ This is the post processing container for generating vector embeddings off of th
 ./docker-shell.sh
 ```
 
-Once inside the docker container, we can run:
+Once inside the docker container, we first activate the virtual environment with 
+
+```
+. venv/bin/activate
+```
+
+Then we can run:
 
 ```
 python cli.py -d -c 100 # the count arg specifies for how many problems we want to generate vector embeddings
