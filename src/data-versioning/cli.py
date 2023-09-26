@@ -44,32 +44,55 @@ def create_and_save_vector_embeddings(file):
     with open(file, "r") as read_file:
         leetcode_json = json.load(read_file)
 
+        print("process json of length", len(leetcode_json), "from file", file)
+
         problems = []
         solutions = []
 
         for problem in leetcode_json:
-            problem_dict = {key: problem[key] for key in []}
-            solution_dict = {key: problem[key] for key in []}
-            problems.append(json.dumps(problem_dict))
-            solutions.append(json.dumps(solution_dict))
+            problem_dict = {key: problem[key] for key in [
+                "id",
+                "slug",
+                "difficulty",
+                "question",
+                "examples",
+                "constraints",
+                "followup"
+            ]}
+            solution_dict = {key: problem[key] for key in [
+                "id",
+                "cpp_sol",
+                "java_sol",
+                "python_sol",
+                "javascript_sol",
+                "explanation",
+            ]}
+            problem_embedding = embedding_model.encode(
+                json.dumps(problem_dict)
+            )
+            solution_embedding = embedding_model.encode(
+                json.dumps(solution_dict)
+            )
 
-        problem_embeddings = embedding_model.encode(problems)
-        solution_embeddings = embedding_model.encode(solutions)
+            problems.append(problem_embedding)
+            solutions.append(solution_embedding)
+
+        print("finished generating problem and solution embeddings")
 
         with open(dataset_result_folder + '/problems.pkl', 'wb') as handle:
-            pickle.dump(problem_embeddings,
+            pickle.dump(problems,
                         handle,
                         protocol=pickle.HIGHEST_PROTOCOL)
             
         with open(dataset_result_folder + '/solutions.pkl', 'wb') as handle:
-            pickle.dump(solution_embeddings,
+            pickle.dump(solutions,
                         handle,
                         protocol=pickle.HIGHEST_PROTOCOL)
 
 
 def download_data():
     # clear dataset folders
-    make_local_dataset_folders(dataset_prep_folder)
+    make_local_dataset_folders(dataset_prep_folder, dataset_result_folder)
 
     # initiate Storage client and download processed leetcode data
     download_processed_leetcode_data(bucket_name, dataset_prep_folder)

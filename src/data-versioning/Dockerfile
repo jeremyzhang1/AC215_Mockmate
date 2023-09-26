@@ -1,5 +1,5 @@
 # Use the official Debian-hosted Python image
-FROM python:3.8-slim-buster
+FROM python:3.9-slim-buster
 
 ARG DEBIAN_PACKAGES="build-essential git curl vim"
 
@@ -8,10 +8,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Python wants UTF-8 locale
 ENV LANG=C.UTF-8
-
-# Tell pipenv where the shell is. This allows us to use "pipenv shell" as a
-# container entry point.
-ENV PYENV_SHELL=/bin/bash
 
 # Tell Python to disable buffering so we don't lose any logs.
 ENV PYTHONUNBUFFERED=1
@@ -26,7 +22,7 @@ RUN set -ex; \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     pip install --no-cache-dir --upgrade pip && \
-    pip install pipenv && \
+    pip install virtualenv && \
     useradd -ms /bin/bash app -d /home/app -u 1000 -p "$(openssl passwd -1 Passw0rd)" && \
     mkdir -p /app && \
     chown app:app /app
@@ -37,9 +33,13 @@ USER app
 WORKDIR /app
 
 # Install python packages
-ADD --chown=app:app Pipfile Pipfile.lock /app/
+ADD --chown=app:app requirements.txt /app/
 
-RUN pipenv sync
+RUN virtualenv venv
+
+RUN . venv/bin/activate
+
+RUN pip install -r requirements.txt
 
 # Add the rest of the source code. This is done last so we don't invalidate all
 # layers when we change a line of code.
@@ -48,5 +48,4 @@ ADD --chown=app:app . /app
 RUN git config --global --add safe.directory /app
 
 # Entry point
-#ENTRYPOINT ["/bin/bash","./docker-entrypoint.sh"]
-ENTRYPOINT ["pipenv","shell"]
+ENTRYPOINT [".", "venv/bin/activate"]
