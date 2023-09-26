@@ -5,7 +5,7 @@ set -e
 
 # Define some environment variables
 export IMAGE_NAME="mockmate-data-preprocess"
-export BASE_DIR=$(pwd)
+export BASE_DIR="$(pwd)"
 
 # Build the image based on the Dockerfile
 docker build -t $IMAGE_NAME -f Dockerfile .
