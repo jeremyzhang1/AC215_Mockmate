@@ -10,6 +10,9 @@ def create_model_checkpoint():
     """
     pass
 
+def output_response():
+    # converting the pytorch tensors into text
+    pass
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Model Fine-tuning CLI...")
