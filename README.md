@@ -1,7 +1,5 @@
-AC215 (Milestone2)
+AC215_Mockmate
 ==============================
-
-AC215 - Milestone2
 
 Project Organization
 ------------
@@ -35,7 +33,7 @@ README.md
 requirements.txt
 ```
 --------
-# AC215 - Milestone2 - Mockmate
+# AC215 - Mockmate
 
 **Team Members**  
 Jeremy Zhang, Andrew Sima, Rudra Barua
@@ -46,7 +44,11 @@ Mockmate
 **Project**  
 In this project, our goal is to build an application that can simulate software engineering job interviews by generating technical questions relevant to the domain. This platform will also evaluate candidates' responses in real-time, offering feedback on coding efficiency and response quality.
 
-### Milestone2 ###
+### Milestone 3 ###
+
+In this milestone, we TODO.
+
+### Milestone 2 ###
 
 In this milestone, we gathered data about [Leetcode](https://leetcode.com/problemset/all/) questions, cleaned the data, versioned the data, and generated a rudimentary set of embeddings in support for training for the next milestone. We also devloped a set of atomic containers that runs each of the steps as well as a pipeline to push all the various pieces of processed data into GCP buckets.
 
