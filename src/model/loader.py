@@ -3,26 +3,37 @@ import os
 import shutil
 import dvc.api
 
+def pull_versioned_model_from_dvc(model_data_folder, rev=None):
+    """
+    Pull all pkl files from the DVC remote to the specified local folder.
+    
+    Args:
+    - model_data_folder (str): Local directory to save the pulled files.
+    - rev (str, optional): Specific version (git commit/branch/tag) of the data to pull. 
+                            If None, it will pull the latest version.
+    """
 
-# TODO: rudra.barua figure out how to actually download models from DVC
-def pull_versioned_model_from_dvc(model_data_folder):
-    # remove and recreate the model_data folder
+    # Remove and recreate the model_data folder
     shutil.rmtree(model_data_folder, ignore_errors=True, onerror=None)
     os.makedirs(model_data_folder, exist_ok=True)
 
-    # we will always just pull the most up to date version for now
-    dvc.api.read(
-        'model.pkl',
-        repo='https://github.com/iterative/example-get-started'
-        mode='rb'
-    )
-
+    # Using DVC's open function to iterate and pull files
+    with dvc.api.open(
+        path='src/model/training_data/',
+        mode='rb',
+        remote='src/data-versioning/leetcode_dataset_embeddings',
+        rev=rev
+    ) as fd:
+        for file in fd:
+            if file.endswith('.pkl'):
+                dst = os.path.join(model_data_folder, os.path.basename(file))
+                with open(dst, 'wb') as out_file:
+                    out_file.write(fd.read())
 
 def main(args=None):
     if args.pull:
         model_data = "trained_model"
-        pull_versioned_model_from_dvc(model_data)
-
+        pull_versioned_model_from_dvc(model_data, rev=args.version)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Model Loader CLI...")
