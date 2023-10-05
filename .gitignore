@@ -138,3 +138,4 @@ dmypy.json
 leetcode_dataset_prep/
 leetcode_dataset_embeddings/
 model_store/
+training_data/
