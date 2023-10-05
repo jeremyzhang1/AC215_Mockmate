@@ -15,6 +15,7 @@ docker build -t model-train-serve-cli --platform=linux/arm64/v8 -f Dockerfile .
 
 # Run Container
 docker run --rm --name model-train-serve-cli -ti \
+--gpus all \
 -v "$BASE_DIR":/app \
 -v "$SECRETS_DIR":/secrets \
 -v ~/.gitconfig:/etc/gitconfig \

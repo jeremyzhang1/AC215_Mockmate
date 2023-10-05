@@ -1,7 +1,6 @@
 from transformers import LlamaTokenizer, LlamaForCausalLM
 
 
-# TODO: rudra to actually return the results of a model query
 def output_response(tokenizer_in_use, model_in_use, user_query):
     """
     Generate the output response for a given user query.
@@ -14,16 +13,17 @@ def output_response(tokenizer_in_use, model_in_use, user_query):
     Returns:
         str: The response generated for the user query.
     """
-    # Converting the pytorch tensors into text
-    tokenizer = AutoTokenizer.from_pretrained(f"./model_store/{model_dir_name}")
 
-    # Convert tensor to list of token IDs
-    token_ids = tensor.tolist()
+    # use tokenizer to compute input_ids
+    input_ids = tokenizer_in_use(user_query, return_tensors="pt").input_ids
+    input_ids.to("cuda")
 
-    # Decode token IDs to text
-    text = tokenizer.decode(token_ids, skip_special_tokens=True)
-
-    return text
+    # generate output
+    generation_output = model_in_use.generate(
+        input_ids=input_ids,
+        max_new_tokens=128,
+    )
+    return tokenizer_in_use.decode(generation_output[0])
 
 
 def load_model_from_local(local_model_path, named_base_model):
