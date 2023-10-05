@@ -12,6 +12,15 @@ from google.cloud import storage
 
 # generic function to first download data from bucket
 def parse_leetcode_data(bucket_name):
+    """
+    Downloads and parses processed LeetCode data from a specified bucket.
+
+    Args:
+        bucket_name (str): The name of the bucket containing the data.
+
+    Returns:
+        dict: The parsed LeetCode data in JSON format.
+    """
     print("downloading processed leetcode data")
 
     # init storage client
@@ -31,6 +40,15 @@ def parse_leetcode_data(bucket_name):
 # the format that we want is the Alpaca format
 @dask.delayed
 def transform_to_alpaca_ddelayed_format(entry):
+    """
+    Decorates a function to create a delayed version of it using Dask.
+
+    :param entry: The entry to be transformed.
+    :type entry: dict
+
+    :return: A dictionary containing the prompt and response.
+    :rtype: dict
+    """
     preamble = """Below is an instruction that describes a coding task, along with given constraints and examples of test cases that you are required to pass.
     Write a solution that appropriately solves the coding task using python code and an explanation for your code."""
     stitched_prompt = (
@@ -53,6 +71,15 @@ def transform_to_alpaca_ddelayed_format(entry):
 
 
 def clean_entry(entry):
+    """
+    Check if the given entry is clean.
+
+    Args:
+        entry (dict): The entry to be checked.
+
+    Returns:
+        bool: True if the entry is clean, False otherwise.
+    """
     for key in ["question", "constraints", "examples", "python_sol", "explanation"]:
         if key not in entry or entry[key] is None:
             return False
@@ -83,7 +110,7 @@ if __name__ == "__main__":
     start = time.time()
     lazy_leetcode_training_data = dask.compute(lazy_leetcode_training_data)
 
-    # print results and save to local file
+    # print results and save to local pickle file
     print("dask computation time:", time.time() - start)
     shutil.rmtree(dataset_result_folder, ignore_errors=True, onerror=None)
     os.makedirs(dataset_result_folder, exist_ok=True)

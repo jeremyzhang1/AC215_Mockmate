@@ -1,3 +1,7 @@
+# this script is not so useful anymore, since we can just directly pull from huggingface
+
+# figure out how we actually pull from dvc though
+
 import argparse
 from transformers import AutoTokenizer
 
@@ -7,7 +11,7 @@ model_dir_name = "falcon7b"
 
 def pull_initial_model_to_local():
     tokenizer = AutoTokenizer.from_pretrained(model_name)
-    tokenizer.save_pretrained(f"./model_store/{model_dir_name}")
+    tokenizer.save_pretrained(f"model_store/{model_dir_name}")
 
 
 def pull_versioned_model_from_dvc():
