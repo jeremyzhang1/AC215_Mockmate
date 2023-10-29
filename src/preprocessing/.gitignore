@@ -1,0 +1,6 @@
+# raw data
+/processed_leetcode_data
+/unprocessed_leetcode_data
+
+# misc
+.DS_Store
