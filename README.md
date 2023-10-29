@@ -45,6 +45,16 @@ Mockmate
 **Project**  
 In this project, our goal is to build an application that can simulate software engineering job interviews by generating technical questions relevant to the domain. This platform will also evaluate candidates' responses in real-time, offering feedback on coding efficiency and response quality.
 
+### Milestone 4 ###
+
+## Model Optimization ##
+
+TODO
+
+## Vertex AI Pipelines ##
+
+TODO
+
 ### Milestone 3 ###
 
 In this milestone, we wrote a parallel data processing pipeline using Dask to properly format a previously collected dataset in "Alpaca form", a convenient response/answer format we picked specifically for fine-tuning our LLM. We added onto our previous data version control pipeline by adding support for saving and loading models from DVC. We also implemented the fine-tuning script that processes the training data and trains the model using libraries provided by HuggingFace. Finally, we added the necessary functionality to pass user provided prompts to our fine-tuned model. Before running any of the commands below, make sure to set the appropriate env variables specified in `docker-shell.sh`
