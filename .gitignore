@@ -134,6 +134,11 @@ dmypy.json
 # mac
 .DS_Store
 
+# vscode
+.vscode/
+
 # project
 leetcode_dataset_prep/
 leetcode_dataset_embeddings/
+model_store/
+training_data/

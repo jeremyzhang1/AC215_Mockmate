@@ -1,0 +1,11 @@
+outs:
+- hash: md5
+  path: training_data
+  files:
+  - relpath: ready.pkl
+    md5: c8ac1da09103c0f319940a36b2e8fc01
+    size: 6630852
+    cloud:
+      src/data-versioning/leetcode_dataset_embeddings:
+        etag: 08e191dda5a0df81031001
+        version_id: '1696520750975201'

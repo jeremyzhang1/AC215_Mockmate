@@ -1,7 +1,5 @@
-AC215 (Milestone2)
+AC215_Mockmate
 ==============================
-
-AC215 - Milestone2
 
 Project Organization
 ------------
@@ -35,7 +33,8 @@ README.md
 requirements.txt
 ```
 --------
-# AC215 - Milestone2 - Mockmate
+
+# AC215 - Mockmate
 
 **Team Members**  
 Jeremy Zhang, Andrew Sima, Rudra Barua
@@ -46,7 +45,61 @@ Mockmate
 **Project**  
 In this project, our goal is to build an application that can simulate software engineering job interviews by generating technical questions relevant to the domain. This platform will also evaluate candidates' responses in real-time, offering feedback on coding efficiency and response quality.
 
-### Milestone2 ###
+### Milestone 3 ###
+
+In this milestone, we wrote a parallel data processing pipeline using Dask to properly format a previously collected dataset in "Alpaca form", a convenient response/answer format we picked specifically for fine-tuning our LLM. We added onto our previous data version control pipeline by adding support for saving and loading models from DVC. We also implemented the fine-tuning script that processes the training data and trains the model using libraries provided by HuggingFace. Finally, we added the necessary functionality to pass user provided prompts to our fine-tuned model. Before running any of the commands below, make sure to set the appropriate env variables specified in `docker-shell.sh`
+
+## Distributed/Parallel Data Computation
+
+The `prepare.py` Python script processes LeetCode data retrieved from a Google Cloud Storage bucket. We read the Leetcode data into a Dask Bag object for cleaning. We then used the Delayed computation paradigm to transform the data for training using parallel processing. You can run this with the following:
+
+```
+python prepare.py
+```
+
+Then you can register the training data to DVC using:
+
+```
+dvc add src/model/training_data
+
+dvc push 
+```
+
+## Saving and Loading Model Weights from DVC
+
+The `loader.py` Python script facilitates downloading versioned machine learning models from a DVC. The CLI tool always pulls the most up-to-date version of the model. You can run this with the following:
+
+```
+python loader.py -p
+```
+
+Similarly, you can also register new model weights to DVC using:
+
+```
+dvc add src/model/trained_model
+
+dvc push 
+```
+
+## Fine-tuning Step
+
+The `finetune.py` script fine-tunes a language model using the Hugging Face Transformers library. It starts by loading our preprocessed dataset, then splitting it into training and validation sets. The model is based on `open_llama_3b_v2`. We use quantization and Learned Rank Adaptation (LoRA) to finetune the model. See source code for more detailed training parameters such as batch size, learning rate, and optimization strategies.
+
+The core training logic utilizes the `Trainer` class from the `transformers` library. We used a custom iterable dataset class    `ConstantLengthDataset` to convert the training data into tensors. The trained model is saved to the local `trained_model` folder so that we can save it to DVC. You can run this with the following:
+
+```
+python finetune.py
+```
+
+## Querying the Model with User Input
+
+The `query.py` script will follow up the finetune step and load a pre-trained language model and its corresponding tokenizer from the  local `trained_model` directory. It continuously accepts user queries, processes them using the loaded model, and outputs the generated responses (note that it is quite slow, currently ~45s a query). Assuming the model has already been pulled to the local `trained_model/` directory, you can run this with the following:
+
+```
+python query.py
+```
+
+### Milestone 2 ###
 
 In this milestone, we gathered data about [Leetcode](https://leetcode.com/problemset/all/) questions, cleaned the data, versioned the data, and generated a rudimentary set of embeddings in support for training for the next milestone. We also devloped a set of atomic containers that runs each of the steps as well as a pipeline to push all the various pieces of processed data into GCP buckets.
 
