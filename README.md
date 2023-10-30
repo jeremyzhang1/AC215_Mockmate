@@ -88,7 +88,7 @@ We created Vertex AI pipelines for the various flows. First, we needed to build 
 
 We also added a new `workflow` folder that contains the `cli.py` file for the various workflows that can be run. Here is a screenshot of one such Vertex AI pipeline being run:
 
-![vertet_ai.png](vertex_ai.png)
+![vertex_ai.png](vertex_ai.png)
 
 ### Milestone 3 ###
 
