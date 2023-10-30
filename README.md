@@ -6,7 +6,9 @@ Project Organization
 ```
 .dvc/  
 ├─ .gitignore  
-└─ config  
+└─ config
+notebooks/
+├─ mockmate_quantization.ipynb
 src/  
 ├─ api-frontend/  
 │  └─ app/  
@@ -18,14 +20,32 @@ src/
 │  ├─ docker-shell.sh  
 │  ├─ Dockerfile  
 │  ├─ leetcode_dataset_embeddings.dvc  
-│  └─ requirements.txt  
-└─ preprocessing/  
-   ├─ .gitignore  
-   ├─ docker-shell.sh
+│  └─ requirements.txt
+├─ model/
+│  ├─ .gitignore  
+│  ├─ Dockerfile  
+│  ├─ docker-shell.sh  
+│  ├─ finetune.py 
+│  ├─ loader.py
+│  ├─ prepare.py
+│  ├─ query.py
+│  ├─ requirements.txt
+│  └─ training_data.dvc
+├─ preprocessing/  
+|  ├─ .gitignore  
+|  ├─ docker-shell.sh
+|  ├─ Dockerfile  
+|  ├─ Pipfile  
+|  ├─ Pipfile.lock  
+|  └─ preprocess_cli.py  
+└─  workflow/
    ├─ Dockerfile  
-   ├─ Pipfile  
-   ├─ Pipfile.lock  
-   └─ preprocess_cli.py  
+   ├─ Pipefile
+   ├─ Pipfile.lock
+   ├─ cli.py
+   ├─ data_preprocessor.yaml
+   ├─ docker-entrypoint.sh
+   └─ docker-shell.sh
 .dvcignore  
 .gitignore  
 LICENSE  
