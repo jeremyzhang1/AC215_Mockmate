@@ -53,7 +53,13 @@ TODO
 
 ## Vertex AI Pipelines ##
 
-TODO
+We created Vertex AI pipelines for the various flows. First, we needed to build and push all of our Docker files to the public Docker registry so they can be pulled down. You can see them [here](https://hub.docker.com/repositories/zhangjeremy1), or view the screenshot below.
+
+![docker_repo.png](docker_repo.png)
+
+We also added a new `workflow` folder that contains the `cli.py` file for the various workflows that can be run. Here is a screenshot of one such Vertex AI pipeline being run:
+
+![vertet_ai.png](vertex_ai.png)
 
 ### Milestone 3 ###
 

@@ -11,7 +11,8 @@ export GCP_ZONE="us-central1-a"
 docker network inspect model-train-serve-network >/dev/null 2>&1 || docker network create model-train-serve-network
 
 # Build the image based on the Dockerfile
-docker build -t model-train-serve-cli --platform=linux/arm64/v8 -f Dockerfile .
+# docker build -t model-train-serve-cli --platform=linux/arm64/v8 -f Dockerfile .
+docker build -t model-train-serve-cli -f Dockerfile .
 
 # Run Container
 docker run --rm --name model-train-serve-cli -ti \

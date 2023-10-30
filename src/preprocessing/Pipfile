@@ -6,7 +6,10 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
+user-agent = "*"
+requests = "*"
+beautifulsoup4 = "*"
 google-cloud-storage = "*"
 
 [requires]
-python_version = "3.8"
+python_version = "3.9"
