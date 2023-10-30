@@ -1,0 +1,75 @@
+# PIPELINE DEFINITION
+# Name: model-pipeline
+components:
+  comp-finetune:
+    executorLabel: exec-finetune
+  comp-load-model:
+    executorLabel: exec-load-model
+  comp-prepare-data:
+    executorLabel: exec-prepare-data
+  comp-serve-query:
+    executorLabel: exec-serve-query
+deploymentSpec:
+  executors:
+    exec-finetune:
+      container:
+        args:
+        - finetune.py
+        image: docker.io/zhangjeremy1/model-train-serve-cli:latest
+    exec-load-model:
+      container:
+        args:
+        - loader.py
+        - -p
+        image: docker.io/zhangjeremy1/model-train-serve-cli:latest
+    exec-prepare-data:
+      container:
+        args:
+        - prepare.py
+        image: docker.io/zhangjeremy1/model-train-serve-cli:latest
+    exec-serve-query:
+      container:
+        args:
+        - query.py
+        image: docker.io/zhangjeremy1/model-train-serve-cli:latest
+pipelineInfo:
+  name: model-pipeline
+root:
+  dag:
+    tasks:
+      finetune:
+        cachingOptions:
+          enableCache: true
+        componentRef:
+          name: comp-finetune
+        dependentTasks:
+        - load-model
+        taskInfo:
+          name: Fine Tune Model
+      load-model:
+        cachingOptions:
+          enableCache: true
+        componentRef:
+          name: comp-load-model
+        dependentTasks:
+        - prepare-data
+        taskInfo:
+          name: Load Model
+      prepare-data:
+        cachingOptions:
+          enableCache: true
+        componentRef:
+          name: comp-prepare-data
+        taskInfo:
+          name: Prepare Data
+      serve-query:
+        cachingOptions:
+          enableCache: true
+        componentRef:
+          name: comp-serve-query
+        dependentTasks:
+        - finetune
+        taskInfo:
+          name: Serve Query Task
+schemaVersion: 2.1.0
+sdkVersion: kfp-2.4.0

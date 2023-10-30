@@ -1,0 +1,28 @@
+# PIPELINE DEFINITION
+# Name: data-embeddings-pipeline
+components:
+  comp-data-embeddings:
+    executorLabel: exec-data-embeddings
+deploymentSpec:
+  executors:
+    exec-data-embeddings:
+      container:
+        args:
+        - cli.py
+        - -d
+        - -c 100
+        image: docker.io/zhangjeremy1/data-version-cli:latest
+pipelineInfo:
+  name: data-embeddings-pipeline
+root:
+  dag:
+    tasks:
+      data-embeddings:
+        cachingOptions:
+          enableCache: true
+        componentRef:
+          name: comp-data-embeddings
+        taskInfo:
+          name: data-embeddings
+schemaVersion: 2.1.0
+sdkVersion: kfp-2.4.0

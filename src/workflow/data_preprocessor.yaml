@@ -12,21 +12,21 @@ deploymentSpec:
     exec-data-preprocessor-clean:
       container:
         args:
-        - preprocess-cli.py
+        - preprocess_cli.py
         - -c
-        image: docker.io/zhangjeremy1/mockmate-data-preprocess
+        image: docker.io/zhangjeremy1/mockmate-data-preprocess:latest
     exec-data-preprocessor-download:
       container:
         args:
-        - preprocess-cli.py
+        - preprocess_cli.py
         - -d
-        image: docker.io/zhangjeremy1/mockmate-data-preprocess
+        image: docker.io/zhangjeremy1/mockmate-data-preprocess:latest
     exec-data-preprocessor-upload:
       container:
         args:
-        - preprocess-cli.py
+        - preprocess_cli.py
         - -u
-        image: docker.io/zhangjeremy1/mockmate-data-preprocess
+        image: docker.io/zhangjeremy1/mockmate-data-preprocess:latest
 pipelineInfo:
   name: data-preprocessor-pipeline
 root:
