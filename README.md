@@ -6,7 +6,9 @@ Project Organization
 ```
 .dvc/  
 ├─ .gitignore  
-└─ config  
+└─ config
+notebooks/
+├─ mockmate_quantization.ipynb
 src/  
 ├─ api-frontend/  
 │  └─ app/  
@@ -18,14 +20,32 @@ src/
 │  ├─ docker-shell.sh  
 │  ├─ Dockerfile  
 │  ├─ leetcode_dataset_embeddings.dvc  
-│  └─ requirements.txt  
-└─ preprocessing/  
-   ├─ .gitignore  
-   ├─ docker-shell.sh
+│  └─ requirements.txt
+├─ model/
+│  ├─ .gitignore  
+│  ├─ Dockerfile  
+│  ├─ docker-shell.sh  
+│  ├─ finetune.py 
+│  ├─ loader.py
+│  ├─ prepare.py
+│  ├─ query.py
+│  ├─ requirements.txt
+│  └─ training_data.dvc
+├─ preprocessing/  
+|  ├─ .gitignore  
+|  ├─ docker-shell.sh
+|  ├─ Dockerfile  
+|  ├─ Pipfile  
+|  ├─ Pipfile.lock  
+|  └─ preprocess_cli.py  
+└─  workflow/
    ├─ Dockerfile  
-   ├─ Pipfile  
-   ├─ Pipfile.lock  
-   └─ preprocess_cli.py  
+   ├─ Pipefile
+   ├─ Pipfile.lock
+   ├─ cli.py
+   ├─ data_preprocessor.yaml
+   ├─ docker-entrypoint.sh
+   └─ docker-shell.sh
 .dvcignore  
 .gitignore  
 LICENSE  
@@ -49,7 +69,16 @@ In this project, our goal is to build an application that can simulate software 
 
 ## Model Optimization ##
 
-TODO
+**Model Loading with 8-Bit Quantization:**
+In our intial optimization, we applied 8-bit quantization when loading the model. The major benefit of 8-but quantization is the significant reduction in model size and faster inference times. 
+
+**Low-Rank Adaptation (LORA):**
+Low-Rank Adaptation (LORA) is a technique designed to adapt large pre-trained models, especially when the downstream task have limited available data. Instead of fine-tuning the entire pre-train OpenLlama model, LORA adds low-rank matrices to the pre-existing layers. This allows our model to learn task-specific information with a limit number of parameters. In the 'LoraConfig' object we specify configuration such as the rank of the added matrices (`r=16`), and which specific layersto target for adaptation.
+
+**Half-Precision (16-bit) Training:**
+We used half-precision training to utilize 16-bit floating-point numbers instead of the conventional 32-bit numbers for reduced precision training. By halving the precision, we reduced memory consumption and enabled the use of larger batch sizes. 
+
+![quant_model_loss.png](quant_model_loss.png)
 
 ## Vertex AI Pipelines ##
 
