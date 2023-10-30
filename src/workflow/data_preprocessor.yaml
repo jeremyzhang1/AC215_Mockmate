@@ -1,0 +1,61 @@
+# PIPELINE DEFINITION
+# Name: data-preprocessor-pipeline
+components:
+  comp-data-preprocessor-clean:
+    executorLabel: exec-data-preprocessor-clean
+  comp-data-preprocessor-download:
+    executorLabel: exec-data-preprocessor-download
+  comp-data-preprocessor-upload:
+    executorLabel: exec-data-preprocessor-upload
+deploymentSpec:
+  executors:
+    exec-data-preprocessor-clean:
+      container:
+        args:
+        - preprocess-cli.py
+        - -c
+        image: docker.io/zhangjeremy1/mockmate-data-preprocess
+    exec-data-preprocessor-download:
+      container:
+        args:
+        - preprocess-cli.py
+        - -d
+        image: docker.io/zhangjeremy1/mockmate-data-preprocess
+    exec-data-preprocessor-upload:
+      container:
+        args:
+        - preprocess-cli.py
+        - -u
+        image: docker.io/zhangjeremy1/mockmate-data-preprocess
+pipelineInfo:
+  name: data-preprocessor-pipeline
+root:
+  dag:
+    tasks:
+      data-preprocessor-clean:
+        cachingOptions:
+          enableCache: true
+        componentRef:
+          name: comp-data-preprocessor-clean
+        dependentTasks:
+        - data-preprocessor-download
+        taskInfo:
+          name: Data Clean
+      data-preprocessor-download:
+        cachingOptions:
+          enableCache: true
+        componentRef:
+          name: comp-data-preprocessor-download
+        taskInfo:
+          name: Data Download
+      data-preprocessor-upload:
+        cachingOptions:
+          enableCache: true
+        componentRef:
+          name: comp-data-preprocessor-upload
+        dependentTasks:
+        - data-preprocessor-clean
+        taskInfo:
+          name: Data Upload
+schemaVersion: 2.1.0
+sdkVersion: kfp-2.4.0

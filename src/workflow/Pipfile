@@ -1,0 +1,18 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+user-agent = "*"
+requests = "*"
+beautifulsoup4 = "*"
+google-cloud-storage = "*"
+kfp = "*"
+"google.cloud.aiplatform" = "*"
+protobuf = "~=3.20.0"
+
+[requires]
+python_version = "3.9"
