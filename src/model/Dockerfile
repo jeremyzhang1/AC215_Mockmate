@@ -1,13 +1,17 @@
 # Use the official Debian-hosted Python image
-FROM python:3.10-slim-buster
+FROM python:3.9-slim-buster
 
-ARG DEBIAN_PACKAGES="build-essential git curl vim"
+ARG DEBIAN_PACKAGES="build-essential git curl wget unzip gzip"
 
 # Prevent apt from showing prompts
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Python wants UTF-8 locale
 ENV LANG=C.UTF-8
+
+# Tell pipenv where the shell is. This allows us to use "pipenv shell" as a
+# container entry point.
+ENV PYENV_SHELL=/bin/bash
 
 # Tell Python to disable buffering so we don't lose any logs.
 ENV PYTHONUNBUFFERED=1
@@ -19,17 +23,26 @@ RUN set -ex; \
     apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y --no-install-recommends $DEBIAN_PACKAGES && \
+    apt-get install -y --no-install-recommends software-properties-common apt-transport-https ca-certificates gnupg2 gnupg-agent curl openssh-client && \
+    curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \
+    curl -s https://download.docker.com/linux/debian/gpg | apt-key add - && \
+    add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" && \
+    echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
+    curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg add - && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends google-cloud-sdk docker-ce && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     pip install --no-cache-dir --upgrade pip && \
-    pip install virtualenv && \
-    useradd -ms /bin/bash app -d /home/app -u 1000 -p "$(openssl passwd -1 Passw0rd)" && \
+    pip install pipenv && \
+    pip install openshift docker apache-libcloud && \
+    useradd -ms /bin/bash app -d /home/app -u 1000 -p "$(openssl passwd -1 passw0rd)" && \
+    usermod -aG docker app && \
     mkdir -p /app && \
     chown app:app /app
 
-
 # Switch to the new user
-USER app
+#USER app
 WORKDIR /app
 
 # Install python packages
@@ -45,7 +58,5 @@ RUN pip install -r requirements.txt
 # layers when we change a line of code.
 ADD --chown=app:app . /app
 
-RUN git config --global --add safe.directory /app
-
 # Entry point
-ENTRYPOINT ["/bin/bash"]
+ENTRYPOINT ["/bin/bash","./docker-entrypoint.sh"]

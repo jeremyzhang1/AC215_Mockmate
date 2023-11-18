@@ -11,7 +11,8 @@ export GCP_ZONE="us-central1-a"
 docker network inspect data-versioning-network >/dev/null 2>&1 || docker network create data-versioning-network
 
 # Build the image based on the Dockerfile
-docker build -t data-version-cli --platform=linux/arm64/v8 -f Dockerfile .
+# docker build -t data-version-cli --platform=linux/arm64/v8 -f Dockerfile .
+docker build -t data-version-cli -f Dockerfile .
 
 # Run Container
 docker run --rm --name data-version-cli -ti \
