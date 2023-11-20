@@ -1,0 +1,39 @@
+.home {
+  background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url("../assets/background.jpg") no-repeat center center fixed;
+  background-size: cover;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.landing-text {
+  color: white;
+  text-align: center;
+}
+
+.navbar-no-bg {
+  background: none;
+  padding-top: 32px;
+}
+
+.h1-name {
+  margin-top: 5%;
+  font-size: 5rem;
+}
+
+.h3-slogan {
+  font-size: 1.5rem;
+}
+
+.log-in-button {
+  padding: 8px 16px;
+}
+
+.get-started-button {
+  margin-top: 32px;
+  padding: 8px 16px;
+}
+
+.no-style-link {
+  color: black;
+  text-decoration: none;
+}
