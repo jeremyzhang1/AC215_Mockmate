@@ -1,0 +1,21 @@
+# script to setup NGINX on vm instance
+---
+- hosts: vminstance
+  become: yes
+  tasks:
+    - name: Update apt package cache
+      apt:
+        update_cache: yes
+      when: ansible_os_family == 'Debian'
+
+    - name: Install NGINX
+      apt:
+        name: nginx
+        state: present
+      when: ansible_os_family == 'Debian'
+
+    - name: Ensure NGINX service is running
+      systemd:
+        name: nginx
+        state: started
+        enabled: yes

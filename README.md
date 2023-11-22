@@ -67,7 +67,18 @@ In this project, our goal is to build an application that can simulate software 
 
 ## Milestone 5 ##
 
+**Architecture Diagrams**
+
+Here is our **solution architecture** that details our intended usage processes for our application.
+
+![assets/sourcearch/sourcearch.png](assets/sourcearch/sourcearch.png)
+
+Likewise, below is our **technical architecture** that details our workflows for both users and devs/scientists in  interacting with our application.
+
+![assets/techarch/techarch.png](assets/techarch/techarch.png)
+
 **Deployment Procedure**
+
 The following commands detail commands that can be used to deploy all of our app containers. The deployment is to GCP and all docker images go to GCR. 
 
 - Build and Push Docker Containers to GCR (Google Container Registry)
@@ -97,6 +108,9 @@ ansible-playbook deploy-setup-webserver.yml -i inventory.yml
 ```
 Once the command runs go to `http://<External IP>/`, which can be retrieve from the instance IP returned. 
 
+After executing the commands above correctly, you should be able to see the following deployed instance in the GCP VM dashboard. 
+
+![assets/vmdeployment.png](assets/vmdeployment.png)
 
 ## Milestone 4 ##
 

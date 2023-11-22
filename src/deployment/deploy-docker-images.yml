@@ -1,0 +1,66 @@
+# build and push docker containers to gcr
+---
+- hosts: localhost
+  tasks:
+    - name: Authenticate to Google Cloud Registry
+      shell: gcloud auth configure-docker --quiet
+
+    - name: Build API Server Docker image
+      docker_image:
+        path: ../api-service/
+        name: "{{ gcr_registry }}/{{ gcp_project_id }}/mockmate-api-server:{{ image_tag }}"
+        build:
+          pull: yes
+
+    - name: Push API Server Docker image to Google Container Registry
+      docker_image:
+        name: "{{ gcr_registry }}/{{ gcp_project_id }}/mockmate-api-server:{{ image_tag }}"
+        push: yes
+
+    - name: Build Data Versioning Docker image
+      docker_image:
+        path: ../data-versioning/
+        name: "{{ gcr_registry }}/{{ gcp_project_id }}/mockmate-data-versioning:{{ image_tag }}"
+        build:
+          pull: yes
+
+    - name: Push Data Versioning Docker image
+      docker_image:
+        name: "{{ gcr_registry }}/{{ gcp_project_id }}/mockmate-data-versioning:{{ image_tag }}"
+        push: yes
+
+    - name: Build Frontend Docker image
+      docker_image:
+        path: ../frontend/
+        name: "{{ gcr_registry }}/{{ gcp_project_id }}/mockmate-frontend:{{ image_tag }}"
+        build:
+          pull: yes
+
+    - name: Push Frontend Docker image
+      docker_image:
+        name: "{{ gcr_registry }}/{{ gcp_project_id }}/mockmate-frontend:{{ image_tag }}"
+        push: yes
+
+    - name: Build Model Docker image
+      docker_image:
+        path: ../model/
+        name: "{{ gcr_registry }}/{{ gcp_project_id }}/mockmate-model:{{ image_tag }}"
+        build:
+          pull: yes
+
+    - name: Push Model Docker image
+      docker_image:
+        name: "{{ gcr_registry }}/{{ gcp_project_id }}/mockmate-model:{{ image_tag }}"
+        push: yes
+
+    - name: Build Preprocessing Docker image
+      docker_image:
+        path: ../preprocessing/
+        name: "{{ gcr_registry }}/{{ gcp_project_id }}/mockmate-preprocessing:{{ image_tag }}"
+        build:
+          pull: yes
+
+    - name: Push Preprocessing Docker image
+      docker_image:
+        name: "{{ gcr_registry }}/{{ gcp_project_id }}/mockmate-preprocessing:{{ image_tag }}"
+        push: yes
