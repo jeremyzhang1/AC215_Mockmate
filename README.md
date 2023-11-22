@@ -77,6 +77,16 @@ Likewise, below is our **technical architecture** that details our workflows for
 
 ![assets/techarch/techarch.png](assets/techarch/techarch.png)
 
+**Backend API**
+
+We built backend API service using fast API to expose the model to the frontend. We also added additional endpoints to support other features of Mockmates, such as getting the solution and explaination from the Leetcode data we originally collected.
+
+![assets/api_screenshot.png](assets/api_screenshot.png)
+
+**Frontend**
+
+TODO
+
 **Deployment Procedure**
 
 The following commands detail commands that can be used to deploy all of our app containers. The deployment is to GCP and all docker images go to GCR. 
