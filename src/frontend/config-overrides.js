@@ -1,4 +1,3 @@
-const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 const rewireBabelLoader = require("react-app-rewire-babel-loader");
 const path = require("path");
 const fs = require("fs");
@@ -38,10 +37,6 @@ module.exports = function override(config, env) {
     include: /node_modules/,
     type: "javascript/auto"
   });
-
-  config.plugins.push(new MonacoWebpackPlugin({
-    languages: ['python']
-  }));
 
   return config;
 }
