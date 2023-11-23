@@ -135,23 +135,18 @@ async def queryChat(query: QueryModel):
     print('prompt_selector', prompt_selector)
     print()
 
-    # example_text_lengths will count the tokens (or word count) of each example (query + response)
-
     dynamic_prompt = FewShotPromptTemplate(
         example_selector=prompt_selector,
         example_prompt=prompt_tmplt,
-        prefix="""Can you return an array of objects as a JSON formatted string that are geographically relevant to an arbitrary query?
+        prefix="""As a software engineering interview chatbot, I am here to present you with coding challenges, algorithmic puzzles, and system design questions. I will provide solutions and explanations to these problems. 
 
         REQUIREMENTS:
-        - Each object in the array should contain 3 keys: lon, lat, blurb
-        - lon is the longitude of the coords for each match to the query
-        - lat is the latitude of the coords for each match to the query
-        - blurb is the 1-3 sentence answer to the query along with information about the environmental concerns of the city or region in which the coords exist
-        - The array should be max length 3 items
-        - the overall length of the answer should be maximum 500 characters and should be a fully parsable JSON string
-        - if you cannot provide accurate information then please provide your best guess along with a disclaimer
+        - The response will include a clear solution to the presented problem.
+        - Solutions for coding problems will be in Python
+        - Explanations for algorithmic puzzles will include both the approach and the reasoning behind it and their computational efficieny.
+        - System design answers will outline key components and their interactions.
         """,
-        suffix="Here is the arbitrary query...\n\n{input}\n",
+        suffix="\nPlease enter your software engineering interview question below:\n\n{input}\n",
         input_variables=["input"],
         example_separator="\n\n",
     )

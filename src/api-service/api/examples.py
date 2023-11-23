@@ -1,14 +1,34 @@
 examples = [
     {
-        "example_query": "What cities in the world flood the most?",
-        "example_response": '[{{"lon":90.4074,"lat":23.7104,"blurb":"Dhaka, Bangladesh is one of the most flood-prone cities in the world. Situated in the delta region of the Ganges-Brahmaputra-Meghna river system, the city is highly susceptible to flooding due to heavy monsoon rains and rising sea levels. Climate change has exacerbated this problem, leading to more intense rainfall and higher flood risks for the city\'s inhabitants."}}]'
+        "example_query": "How would you find the missing number in a given integer array of 1 to 100?",
+        "example_response": '[{{"content":"To find the missing number in an array that should contain numbers 1 to 100, you can calculate the expected sum of numbers from 1 to 100 using the formula (n * (n + 1)) / 2, where n is 100. Then, subtract the actual sum of numbers in the array from this expected sum. The difference is the missing number."}}]'
     },
     {
-        "example_query": "What is the average temperature of Miami, FL?",
-        "example_response": '[{{"lon":-80.191790,"lat":25.761680,"blurb":"The average annual temperature in Miami, FL is around 77°F (25°C). The city faces environmental concerns such as rising sea levels due to climate change, increased hurricane activity, and threats to the local ecosystem, including the Everglades."}},{{"lon":-80.214012,"lat":25.986765,"blurb":"While the average temperature in Hialeah, FL is similar to Miami, the city faces its own environmental challenges such as rising sea levels, coastal flooding, urban sprawl, air pollution, and water quality issues."}},{{"lon":-80.143378,"lat":25.860048,"blurb":"Miami Beach, FL, also shares a similar average temperature to Miami. The city is grappling with threats from sea-level rise, coastal erosion, and the loss of natural habitats. Beach renourishment and wetland restoration are some of the measures being taken to address these issues."}}]'
+        "example_query": "Write a function to reverse a string in Python.",
+        "example_response": '[{{"content":"To reverse a string in Python, you can use the slicing method. Define a function that takes a string as an input and returns the string[::-1]. This slices the string starting from the end towards the first character, thus reversing it."}}]'
     },
     {
-        "example_query": "What is the hottest place on Earth?",
-        "example_response": '[{{"lon":30.482,"lat":15.775,"blurb":"Lut Desert, Iran, holds the record for the highest temperature ever recorded on Earth. The surface temperature reached a staggering 159.3°F (70.7°C) in 2005. The region is characterized by a lack of vegetation, extreme aridity, and harsh living conditions. The primary environmental concern in the Lut Desert is desertification, which exacerbates water scarcity and threatens the fragile ecosystems."}}]'
+        "example_query": "How would you design a URL shortening service like bit.ly?",
+        "example_response": '[{{"content":"Designing a URL shortening service requires a system that can map long URLs to short, unique identifiers. Key components include a RESTful API for URL submission and redirection, a database for storing URL mappings, and an algorithm for generating short, unique identifiers. Scalability, high availability, and low latency are important factors to consider in the design."}}]'
+    },
+    {
+        "example_query": "Write a function to calculate the number of ways to climb a staircase if you can take 1, 2, or 3 steps at a time.",
+        "example_response": '[{{"content":"This problem can be solved using dynamic programming. Create a function that takes the total number of steps as input and uses a dynamic array to store the number of ways to reach each step. The base cases are: 1 way to climb 1 step, 2 ways for 2 steps, and 4 ways for 3 steps. For each subsequent step, the number of ways to climb is the sum of the ways to climb the previous three steps."}}]'
+    },
+    {
+        "example_query": "How would you implement Dijkstra's algorithm to find the shortest path in a graph?",
+        "example_response": '[{{"content":"Dijkstras algorithm can be implemented using a priority queue to keep track of the minimum distance from the start node to each node. Initialize distances to all nodes as infinity and distance to the start node as 0. Extract the node with the smallest distance from the priority queue and update the distances of its adjacent nodes. Repeat until all nodes have been visited or the queue is empty. The algorithm works best with a weighted graph without negative edges."}}]'
+    },
+    {
+        "example_query": "How can you implement a thread-safe singleton pattern in Java?",
+        "example_response": '[{{"content":"To implement a thread-safe singleton pattern in Java, you can use the `double-checked locking` principle with a private constructor and a volatile instance variable. Initialize the singleton instance as null. In the getInstance() method, check if the instance is null, and if so, synchronize on a lock. Inside the synchronized block, check again if the instance is null before creating a new instance. This ensures the instance is created only once, even with multiple threads."}}]'
+    },
+    {
+        "example_query": "Design a scalable notification system for a high-traffic web application.",
+        "example_response": '[{{"content":"A scalable notification system would use a microservices architecture. Components include a notification service to handle incoming requests, a message queue for buffering and load balancing, and workers for processing notifications. The system should support different types of notifications (email, SMS, push). Scalability can be achieved through load balancers, database sharding, and caching. Monitoring and logging are essential for maintaining system health and performance."}}]'
+    },
+    {
+        "example_query": "What is an efficient algorithm to find all pairs in an array that sum up to a specific target?",
+        "example_response": '[{{"content":"An efficient way is to use a hash map to store elements while iterating through the array. For each element, check if the target minus the current element exists in the map. If it does, you have found a pair. Add each element to the map as you iterate. This algorithm has a time complexity of O(n) as it requires only one pass through the array."}}]'
     }
 ]
