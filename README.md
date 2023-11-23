@@ -83,9 +83,15 @@ We built backend API service using fast API to expose the model to the frontend.
 
 ![assets/api_screenshot.png](assets/api_screenshot.png)
 
+To run the API, go to the `/api-service` folder and run the docker container by running `./docker-shell.sh`
+
 **Frontend**
 
-TODO
+We built our frontend using React and the open source Monaco code editor to simulate a visual studio code environment for interviewees to code in. The editor supports code completion and syntax highlighting for Python. We also needed to make extensive use of react-app-rewired to ensure all the packages loaded correctly.
+
+The frontend has buttons to start the interview by generating a question, as well as a button to get a hint, which gives you a hint based on the current code in the editor. We also have a button to view the solution and explanation at the end once you are done coding.
+
+![assets/frontend_screenshot.png](assets/frontend_screenshot.png)
 
 **Deployment Procedure**
 
