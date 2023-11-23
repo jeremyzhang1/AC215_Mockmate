@@ -10,9 +10,17 @@ Project Organization
 notebooks/
 ├─ mockmate_quantization.ipynb
 src/  
-├─ api-frontend/  
-│  └─ app/  
+├─ api-service/  
+|  ├─ docker-entrypoint.sh
+|  ├─ docker-shell.sh
+|  ├─ Dockerfile
+|  ├─ Pipfile
+|  ├─ Pipfile.lock
+|  ├─ requirements.txt
+│  └─ api/  
+│     ├─ processed-leetcode.json  
 │     ├─ main.py  
+│     ├─ examples.py  
 │     └─ __init__.py  
 ├─ data-versioning/  
 │  ├─ .gitignore  
@@ -21,6 +29,32 @@ src/
 │  ├─ Dockerfile  
 │  ├─ leetcode_dataset_embeddings.dvc  
 │  └─ requirements.txt
+├─ deployment/
+|  ├─ deploy-create-instance.yml
+|  ├─ deploy-docker-images.yml
+|  ├─ deploy-provision-instance.yml
+|  ├─ deploy-setup-containers.yml
+|  ├─ deploy-setup-webserver.yml
+|  └─ inventory.yml
+├─ frontend/
+|  ├─ node_modules/
+|  ├─ public/
+|  |  └─ index.html
+|  ├─ src/
+|  |  ├─ assets/
+|  |  ├─ pages/
+|  |  |  ├─ LandingPage.js
+|  |  |  └─ MockmatePage.js
+|  |  └─  styles/
+|  ├─ App.js
+|  ├─ index.css
+|  ├─ index.js
+|  ├─ config-overrides.js
+|  ├─ docker-shell.sh
+|  ├─ Dockerfile
+|  ├─ package-lock.json
+|  ├─ package.json
+|  └─ README.md
 ├─ model/
 │  ├─ .gitignore  
 │  ├─ Dockerfile  
