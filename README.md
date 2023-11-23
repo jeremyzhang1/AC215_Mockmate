@@ -127,6 +127,8 @@ The frontend has buttons to start the interview by generating a question, as wel
 
 ![assets/frontend_screenshot.png](assets/frontend_screenshot.png)
 
+![assets/frontend_2.png](assets/frontend_2.png)
+
 **Deployment Procedure**
 
 The following commands detail commands that can be used to deploy all of our app containers. The deployment is to GCP and all docker images go to GCR. 
