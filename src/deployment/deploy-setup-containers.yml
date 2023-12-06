@@ -1,0 +1,32 @@
+# pull docker containers onto vm and start all
+---
+- hosts: your_single_vm_instance
+  become: yes
+  tasks:
+
+    - name: Authenticate to Google Container Registry
+      shell: gcloud auth configure-docker --quiet
+
+    - name: Pull Docker containers from GCR
+      docker_container:
+        name: "{{ item.name }}"
+        image: "{{ item.image }}"
+        state: present
+        restart_policy: always
+      with_items:
+        - { name: "gcr_mockmate_api_server", image: "{{ gcr_registry }}/{{ gcp_project_id }}/mockmate-api-server:{{ image_tag }}" }
+        - { name: "gcr_mockmate_data_versioning", image: "{{ gcr_registry }}/{{ gcp_project_id }}/mockmate-data-versioning:{{ image_tag }}" }
+        - { name: "gcr_mockmate_frontend", image: "{{ gcr_registry }}/{{ gcp_project_id }}/mockmate-frontend:{{ image_tag }}" }
+        - { name: "gcr_mockmate_model", image: "{{ gcr_registry }}/{{ gcp_project_id }}/mockmate-model:{{ image_tag }}" }
+        - { name: "gcr_mockmate_preprocessing", image: "{{ gcr_registry }}/{{ gcp_project_id }}/mockmate-preprocessing:{{ image_tag }}" }
+
+    - name: Start Docker containers
+      docker_container:
+        name: "{{ item.name }}"
+        state: started
+      with_items:
+        - gcr_mockmate_api_server
+        - gcr_mockmate_data_versioning
+        - gcr_mockmate_frontend
+        - gcr_mockmate_model
+        - gcr_mockmate_preprocessing

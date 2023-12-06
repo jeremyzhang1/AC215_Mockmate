@@ -1,0 +1,17 @@
+# short ansible script to create a GCP VM instance
+---
+- hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Create GCP VM instance
+      gcp_compute_instance:
+        name: "{{ lookup('env', 'instance_name') }}"
+        machine_type: "projects/{{ lookup('env', 'gcp_project_id') }}/zones/{{ lookup('env', 'zone') }}/machineTypes/n1-standard-1"
+        zone: "{{ lookup('env', 'zone') }}"
+        project: "{{ lookup('env', 'gcp_project_id') }}"
+        disk_size_gb: 10
+        image: "projects/{{ lookup('env', 'gcp_project_id') }}/global/images/{{ lookup('env', 'image_name') }}"
+        service_account_email: "{{ lookup('env', 'service_account_email') }}"
+        state: present
+        auth_kind: serviceaccount
+        service_account_file: "{{ lookup('env', 'service_account_key_path') }}"

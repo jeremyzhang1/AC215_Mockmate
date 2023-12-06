@@ -10,9 +10,17 @@ Project Organization
 notebooks/
 ├─ mockmate_quantization.ipynb
 src/  
-├─ api-frontend/  
-│  └─ app/  
+├─ api-service/  
+|  ├─ docker-entrypoint.sh
+|  ├─ docker-shell.sh
+|  ├─ Dockerfile
+|  ├─ Pipfile
+|  ├─ Pipfile.lock
+|  ├─ requirements.txt
+│  └─ api/  
+│     ├─ processed-leetcode.json  
 │     ├─ main.py  
+│     ├─ examples.py  
 │     └─ __init__.py  
 ├─ data-versioning/  
 │  ├─ .gitignore  
@@ -21,6 +29,32 @@ src/
 │  ├─ Dockerfile  
 │  ├─ leetcode_dataset_embeddings.dvc  
 │  └─ requirements.txt
+├─ deployment/
+|  ├─ deploy-create-instance.yml
+|  ├─ deploy-docker-images.yml
+|  ├─ deploy-provision-instance.yml
+|  ├─ deploy-setup-containers.yml
+|  ├─ deploy-setup-webserver.yml
+|  └─ inventory.yml
+├─ frontend/
+|  ├─ node_modules/
+|  ├─ public/
+|  |  └─ index.html
+|  ├─ src/
+|  |  ├─ assets/
+|  |  ├─ pages/
+|  |  |  ├─ LandingPage.js
+|  |  |  └─ MockmatePage.js
+|  |  └─  styles/
+|  ├─ App.js
+|  ├─ index.css
+|  ├─ index.js
+|  ├─ config-overrides.js
+|  ├─ docker-shell.sh
+|  ├─ Dockerfile
+|  ├─ package-lock.json
+|  ├─ package.json
+|  └─ README.md
 ├─ model/
 │  ├─ .gitignore  
 │  ├─ Dockerfile  
@@ -64,6 +98,71 @@ Mockmate
 
 **Project**  
 In this project, our goal is to build an application that can simulate software engineering job interviews by generating technical questions relevant to the domain. This platform will also evaluate candidates' responses in real-time, offering feedback on coding efficiency and response quality.
+
+## Milestone 5 ##
+
+**Architecture Diagrams**
+
+Here is our **solution architecture** that details our intended usage processes for our application.
+
+![assets/sourcearch/sourcearch.png](assets/sourcearch/sourcearch.png)
+
+Likewise, below is our **technical architecture** that details our workflows for both users and devs/scientists in  interacting with our application.
+
+![assets/techarch/techarch.png](assets/techarch/techarch.png)
+
+**Backend API**
+
+We built backend API service using fast API to expose the model to the frontend. We also added additional endpoints to support other features of Mockmates, such as getting the solution and explaination from the Leetcode data we originally collected.
+
+![assets/api_screenshot.png](assets/api_screenshot.png)
+
+To run the API, go to the `/api-service` folder and run the docker container by running `./docker-shell.sh`
+
+**Frontend**
+
+We built our frontend using React and the open source Monaco code editor to simulate a visual studio code environment for interviewees to code in. The editor supports code completion and syntax highlighting for Python. We also needed to make extensive use of react-app-rewired to ensure all the packages loaded correctly.
+
+The frontend has buttons to start the interview by generating a question, as well as a button to get a hint, which gives you a hint based on the current code in the editor. We also have a button to view the solution and explanation at the end once you are done coding.
+
+![assets/frontend_screenshot.png](assets/frontend_screenshot.png)
+
+![assets/frontend_2.png](assets/frontend_2.png)
+
+**Deployment Procedure**
+
+The following commands detail commands that can be used to deploy all of our app containers. The deployment is to GCP and all docker images go to GCR. 
+
+- Build and Push Docker Containers to GCR (Google Container Registry)
+```
+ansible-playbook deploy-docker-images.yml -i inventory.yml
+```
+
+- Create Compute Instance (VM) Server in GCP
+```
+ansible-playbook deploy-create-instance.yml -i inventory.yml --extra-vars cluster_state=present
+```
+
+- Provision Compute Instance in GCP
+Install and setup all the required things for deployment.
+```
+ansible-playbook deploy-provision-instance.yml -i inventory.yml
+```
+
+- Setup Docker Containers in the  Compute Instance
+```
+ansible-playbook deploy-setup-containers.yml -i inventory.yml
+```
+
+- Setup Webserver on the Compute Instance
+```
+ansible-playbook deploy-setup-webserver.yml -i inventory.yml
+```
+Once the command runs go to `http://<External IP>/`, which can be retrieve from the instance IP returned. 
+
+After executing the commands above correctly, you should be able to see the following deployed instance in the GCP VM dashboard. 
+
+![assets/vmdeployment.png](assets/vmdeployment.png)
 
 ## Milestone 4 ##
 
