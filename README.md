@@ -1,6 +1,14 @@
 AC215_Mockmate
 ==============================
 
+### Presentation Video ###
+
+* 
+
+### Blog Post Link ###
+
+* 
+
 Project Organization
 ------------
 ```
@@ -99,6 +107,16 @@ Mockmate
 **Project**  
 In this project, our goal is to build an application that can simulate software engineering job interviews by generating technical questions relevant to the domain. This platform will also evaluate candidates' responses in real-time, offering feedback on coding efficiency and response quality.
 
+## Milestone 6 ##
+
+**CI/CD Pipelines**
+
+TODO
+
+**Kubernetes Scaling Solution**
+
+TODO
+
 ## Milestone 5 ##
 
 **Architecture Diagrams**
@@ -177,7 +195,7 @@ Low-Rank Adaptation (LORA) is a technique designed to adapt large pre-trained mo
 **Half-Precision (16-bit) Training:**
 We used half-precision training to utilize 16-bit floating-point numbers instead of the conventional 32-bit numbers for reduced precision training. By halving the precision, we reduced memory consumption and enabled the use of larger batch sizes. 
 
-![quant_model_loss.png](quant_model_loss.png)
+![assets/quant_model_loss.png](assets/quant_model_loss.png)
 
 ### Vertex AI Pipelines ###
 
@@ -228,11 +246,11 @@ Please see the `Results` section below for a screenshot of an example of a succe
 
 We created Vertex AI pipelines for the various flows. First, we needed to build and push all of our Docker files to the public Docker registry so they can be pulled down. You can see them [here](https://hub.docker.com/repositories/zhangjeremy1), or view the screenshot below.
 
-![docker_repo.png](docker_repo.png)
+![assets/docker_repo.png](assets/docker_repo.png)
 
 We also added a new `workflow` folder that contains the `cli.py` file for the various workflows that can be run. Here is a screenshot of one such Vertex AI pipeline being run:
 
-![vertex_ai.png](vertex_ai.png)
+![assets/vertex_ai.png](assets/vertex_ai.png)
 
 ## Milestone 3 ##
 
