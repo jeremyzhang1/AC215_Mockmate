@@ -5,6 +5,15 @@ all:
       ansible_host: 35.185.11.233
 
   vars:
+    disk_name: "mockmate-ansible-disk"
+    source_image: "projects/ubuntu-os-cloud/global/images/family/ubuntu-2004-lts"
+    service_account_file: "{{ lookup('env', 'service_account_key_path') }}"
+    project: "{{ lookup('env', 'gcp_project_id') }}"
+    machine_name: "{{ lookup('env', 'instance_name') }}"
+    zone: "{{ lookup('env', 'zone') }}"
+    subnet_cidr: "10.0.1.0/24"
+    disk_size: 10
+    machine_type: "f1-micro"
     gcr_registry: "{{ lookup('env', 'gcr_registry') }}"
     gcp_project_id: "{{ lookup('env', 'gcp_project_id') }}"
     image_tag: latest

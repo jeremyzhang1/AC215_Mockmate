@@ -1,6 +1,6 @@
 # pull docker containers onto vm and start all
 ---
-- hosts: your_single_vm_instance
+- hosts: vminstance
   become: yes
   tasks:
 
