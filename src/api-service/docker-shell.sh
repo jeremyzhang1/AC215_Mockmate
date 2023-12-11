@@ -12,7 +12,7 @@ export ENDPOINT_ID="6050992918674538496"
 export REGION="us-central1"
 
 # Build the image based on the Dockerfile
-docker build -t $IMAGE_NAME -f Dockerfile .
+# docker build -t $IMAGE_NAME -f Dockerfile .
 
 # Run the container
 docker run --rm --name $IMAGE_NAME -ti \
