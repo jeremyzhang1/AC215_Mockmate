@@ -1,10 +1,7 @@
 all:
-  gather_facts: false
-  hosts:
-    vminstance:
-      ansible_host: 35.185.11.233
-
   vars:
+    ansible_user: sa_101825031693461376542
+    ansible_ssh_private_key_file: "../secrets/ssh-key-deployment"
     disk_name: "mockmate-ansible-disk"
     source_image: "projects/ubuntu-os-cloud/global/images/family/ubuntu-2004-lts"
     service_account_file: "{{ lookup('env', 'service_account_key_path') }}"
@@ -12,12 +9,14 @@ all:
     machine_name: "{{ lookup('env', 'instance_name') }}"
     zone: "{{ lookup('env', 'zone') }}"
     subnet_cidr: "10.0.1.0/24"
-    disk_size: 10
-    machine_type: "f1-micro"
+    disk_size: 40
+    machine_type: "n2d-standard-2"
     gcr_registry: "{{ lookup('env', 'gcr_registry') }}"
     gcp_project_id: "{{ lookup('env', 'gcp_project_id') }}"
+    gcp_auth_kind: serviceaccount
     image_tag: latest
 
-web_servers:
-  hosts:
-    vminstance:
+  children:
+      vminstance:
+          hosts:
+              34.122.216.171:

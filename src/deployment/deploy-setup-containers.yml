@@ -2,10 +2,22 @@
 ---
 - hosts: vminstance
   become: yes
+  connection: ssh
   tasks:
 
-    - name: Authenticate to Google Container Registry
-      shell: gcloud auth configure-docker --quiet
+    # Setup secrets so containers can have access to GCP resources 
+    - name: Create secrets directory
+      file:
+        path: "/srv/secrets"
+        state: "directory"
+        mode: 0755
+    - name: Copy service account key file
+      copy:
+        src: ../secrets/gcp-service.json
+        dest: "/srv/secrets/gcp-service.json"
+        mode: 0644
+    - name: Authenticate gcloud using service account
+      shell: "gcloud auth activate-service-account --key-file /srv/secrets/gcp-service.json"
 
     - name: Pull Docker containers from GCR
       docker_container:
@@ -23,10 +35,11 @@
     - name: Start Docker containers
       docker_container:
         name: "{{ item.name }}"
+        image: "{{ item.image }}"
         state: started
       with_items:
-        - gcr_mockmate_api_server
-        - gcr_mockmate_data_versioning
-        - gcr_mockmate_frontend
-        - gcr_mockmate_model
-        - gcr_mockmate_preprocessing
+        - { name: "gcr_mockmate_api_server", image: "{{ gcr_registry }}/{{ gcp_project_id }}/mockmate-api-server:{{ image_tag }}" }
+        - { name: "gcr_mockmate_data_versioning", image: "{{ gcr_registry }}/{{ gcp_project_id }}/mockmate-data-versioning:{{ image_tag }}" }
+        - { name: "gcr_mockmate_frontend", image: "{{ gcr_registry }}/{{ gcp_project_id }}/mockmate-frontend:{{ image_tag }}" }
+        - { name: "gcr_mockmate_model", image: "{{ gcr_registry }}/{{ gcp_project_id }}/mockmate-model:{{ image_tag }}" }
+        - { name: "gcr_mockmate_preprocessing", image: "{{ gcr_registry }}/{{ gcp_project_id }}/mockmate-preprocessing:{{ image_tag }}" }
