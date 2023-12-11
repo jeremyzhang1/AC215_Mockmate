@@ -1,17 +1,54 @@
 # short ansible script to create a GCP VM instance
 ---
-- hosts: localhost
-  gather_facts: no
+- name: Create instance in GCP
+  hosts: localhost
+  gather_facts: false
   tasks:
-    - name: Create GCP VM instance
-      gcp_compute_instance:
-        name: "{{ lookup('env', 'instance_name') }}"
-        machine_type: "projects/{{ lookup('env', 'gcp_project_id') }}/zones/{{ lookup('env', 'zone') }}/machineTypes/n1-standard-1"
-        zone: "{{ lookup('env', 'zone') }}"
-        project: "{{ lookup('env', 'gcp_project_id') }}"
-        disk_size_gb: 10
-        image: "projects/{{ lookup('env', 'gcp_project_id') }}/global/images/{{ lookup('env', 'image_name') }}"
-        service_account_email: "{{ lookup('env', 'service_account_email') }}"
+    - name: Create a disk 
+      google.cloud.gcp_compute_disk: 
+        name: "{{ disk_name }}" 
+        size_gb: "{{ disk_size }}" 
+        source_image: "{{ source_image }}" 
+        zone: "{{ zone }}" 
+        project: "{{ project }}" 
+        auth_kind: serviceaccount 
+        service_account_file: "{{ service_account_file }}" 
         state: present
+      register: disk
+    - name: Create a Network
+      google.cloud.gcp_compute_network:
+        name: network-instance
+        project: "{{ project }}"
         auth_kind: serviceaccount
-        service_account_file: "{{ lookup('env', 'service_account_key_path') }}"
+        service_account_file: "{{ service_account_file }}"
+        auto_create_subnetworks: true
+        state: present
+      register: network
+    - name: Create an Address
+      google.cloud.gcp_compute_address:
+        name: address-instance
+        region: us-central1
+        project: "{{ project }}"
+        auth_kind: serviceaccount
+        service_account_file: "{{ service_account_file }}"
+        state: present
+      register: address
+    - name: Create an Instance
+      gcp_compute_instance:
+        auth_kind: serviceaccount
+        project: "{{ project }}"
+        service_account_file: "{{ service_account_file }}"
+        state: present
+        name: "{{ machine_name }}"
+        machine_type: "{{ machine_type }}"
+        zone: "{{ zone }}"
+        disks:
+        - auto_delete: 'true'
+          boot: 'true'
+          source: "{{ disk }}"
+        network_interfaces:
+        - network: "{{ network }}"
+          access_configs:
+          - name: External NAT
+            nat_ip: "{{ address }}"
+            type: ONE_TO_ONE_NAT
