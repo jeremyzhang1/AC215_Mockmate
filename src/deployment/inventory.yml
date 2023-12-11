@@ -1,11 +1,12 @@
 all:
+  gather_facts: false
   hosts:
     vminstance:
       ansible_host: 35.185.11.233
 
   vars:
-    gcr_registry: "{{ lookup('env', 'GCR_REGISTRY') }}"
-    gcp_project_id: "{{ lookup('env', 'GCP_PROJECT_ID') }}"
+    gcr_registry: "{{ lookup('env', 'gcr_registry') }}"
+    gcp_project_id: "{{ lookup('env', 'gcp_project_id') }}"
     image_tag: latest
 
 web_servers:

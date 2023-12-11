@@ -7,9 +7,10 @@
 
     - name: Build API Server Docker image
       docker_image:
-        path: ../api-service/
         name: "{{ gcr_registry }}/{{ gcp_project_id }}/mockmate-api-server:{{ image_tag }}"
+        source: build
         build:
+          path: ../api-service/
           pull: yes
 
     - name: Push API Server Docker image to Google Container Registry
