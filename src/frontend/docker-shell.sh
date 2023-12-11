@@ -13,4 +13,4 @@ docker build -t $IMAGE_NAME -f Dockerfile .
 # Run the container
 docker run --rm --name $IMAGE_NAME -ti \
 --mount type=bind,source="$BASE_DIR",target=/app \
--p 3000:3000 $IMAGE_NAME
+-p 3000:80 $IMAGE_NAME
