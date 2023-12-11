@@ -9,6 +9,7 @@ COPY package-lock.json ./
 RUN npm install
 
 COPY . ./
+COPY api/.env .env
 RUN npm run build
 
 # Nginx wrapper to serve static files

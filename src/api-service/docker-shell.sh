@@ -15,7 +15,7 @@ export REGION="us-central1"
 docker build -t $IMAGE_NAME -f Dockerfile .
 
 # Run the container
-docker run --rm --name $IMAGE_NAME -ti \
+docker run --rm --env-file api/.env --name $IMAGE_NAME -ti \
 -v "$BASE_DIR":/app \
 -v "$SECRETS_DIR":/secrets \
 -p 9000:9000 \

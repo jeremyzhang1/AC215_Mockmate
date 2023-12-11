@@ -4,7 +4,7 @@ from langchain.chat_models import ChatOpenAI
 from langchain.prompts import PromptTemplate, FewShotPromptTemplate
 from langchain.schema import HumanMessage
 from langchain.prompts.example_selector import LengthBasedExampleSelector
-from api import examples
+from api import example_prompts
 from google.cloud import aiplatform
 from pydantic import BaseModel
 import json
@@ -14,6 +14,7 @@ import random
 GCP_PROJECT = os.getenv('GCP_PROJECT')
 ENDPOINT_ID = os.getenv('ENDPOINT_ID')
 REGION = os.getenv('REGION')
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
 ENDPOINT_NAME = (f"projects/{GCP_PROJECT}/locations/{REGION}/endpoints/{ENDPOINT_ID}")
 
@@ -114,9 +115,9 @@ async def queryTech(query: QueryModel):
         'body': resp.predictions[0]
     }
 
-@app.post("/query-chat")
-async def queryChat(query: QueryModel):
-    prompt = query.prompt
+@app.get("/query-chat")
+async def queryChat(query: str):
+    prompt = query
 
     llm = ChatOpenAI(temperature=0, model_name='gpt-3.5-turbo')
 
@@ -127,13 +128,9 @@ async def queryChat(query: QueryModel):
     )
 
     prompt_selector = LengthBasedExampleSelector(
-        examples=examples,
+        examples=example_prompts.example_prompt_arr,
         example_prompt=prompt_tmplt
     )
-
-    print()
-    print('prompt_selector', prompt_selector)
-    print()
 
     dynamic_prompt = FewShotPromptTemplate(
         example_selector=prompt_selector,
@@ -153,15 +150,7 @@ async def queryChat(query: QueryModel):
 
     final_prompt = dynamic_prompt.format(input=f'{prompt}')
 
-    print()
-    print('final_prompt')
-    print()
-    print(final_prompt)
-    print()
-
     resp = llm([HumanMessage(content=final_prompt)])
-
-    print(resp)
     
     return {
         'statusCode': 200,

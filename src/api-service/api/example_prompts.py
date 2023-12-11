@@ -1,4 +1,4 @@
-examples = [
+example_prompt_arr = [
     {
         "example_query": "How would you find the missing number in a given integer array of 1 to 100?",
         "example_response": '[{{"content":"To find the missing number in an array that should contain numbers 1 to 100, you can calculate the expected sum of numbers from 1 to 100 using the formula (n * (n + 1)) / 2, where n is 100. Then, subtract the actual sum of numbers in the array from this expected sum. The difference is the missing number."}}]'

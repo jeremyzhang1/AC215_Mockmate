@@ -11,20 +11,20 @@ import '../styles/App.css';
 function MockmatePage() {
     const baseUrl = "http://localhost:9000"
     const defaultQuestion = ""
-    const defaultHelpText = "Click the button to get a hint"
-    const defaultFeedbackText = "Click the button to submit and get feedback"
+    // const defaultHelpText = "Click the button to get a hint"
+    // const defaultFeedbackText = "Click the button to submit and get feedback"
     const editorRef = useRef(null);
     const [editorText, setEditorText] = useState("# your code here")
     const [question, setQuestion] = useState(defaultQuestion)
     const [solution, setSolution] = useState("")
     const [explaination, setExplaination] = useState("")
-    const [helpText, setHelpText] = useState([])
+    const [helpText, setHelpText] = useState("")
 
     function handleEditorDidMount(editor, monaco) {
         editorRef.current = editor;
     }
 
-    function showValue() {
+    function getEditorValue() {
         setEditorText(editorRef.current.getValue())
     }
 
@@ -51,23 +51,14 @@ function MockmatePage() {
             .catch(error => console.error(error));
     }
 
-    async function getHelp() {
-        showValue()
-        const object = {
-            prompt: editorText
-        }
-        alert(JSON.stringify(object))
-        const response = await fetch(baseUrl + '/query-chat', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            mode: 'no-cors',
-            body: JSON.stringify(object)
-        });
-
-        const responseText = await response.text();
-        setHelpText(helpText.append(responseText))
+    function getHelp() {
+        fetch(baseUrl + '/query-chat?' + new URLSearchParams({
+            query: editorText
+        }))
+            .then(response => response.json())
+            // .then(data => { setHelpText([...helpText, data.body]) }) 
+            .then(data => { setHelpText(data.body) })
+            .catch(error => console.error(error));
     }
 
     return (
@@ -76,19 +67,19 @@ function MockmatePage() {
             <Row>
                 <Col>
                     <h3>Question:</h3>
-                    {question == defaultQuestion ? <Button variant='dark' onClick={generateQuestion}>Start Interview</Button> : <Markdown>{question}</Markdown>}
+                    {question === defaultQuestion ? <Button variant='dark' onClick={generateQuestion}>Start Interview</Button> : <Markdown children={question} />}
                     <br></br>
                     <h3>Help:</h3>
                     <Button variant='dark' onClick={getHelp}>Get Hint</Button>
                     <Markdown>{helpText}</Markdown>
                     <h3>Solution and Explanation:</h3>
                     <Button variant='dark' onClick={getSolution} style={{ marginRight: "8px" }}>Show Solution</Button>
-                    <Markdown>{solution}</Markdown>
+                    <Markdown children={solution} />
                     <Button variant='dark' onClick={getExplaination}>Show Explanation</Button>
-                    <Markdown>{explaination}</Markdown>
+                    <Markdown children={explaination} />
                 </Col>
                 <Col>
-                    <Editor height="90vh" defaultLanguage="python" defaultValue={editorText} theme="vs-dark" onMount={handleEditorDidMount} />
+                    <Editor height="90vh" defaultLanguage="python" defaultValue={editorText} theme="vs-dark" onMount={handleEditorDidMount} onChange={getEditorValue}/>
                 </Col>
             </Row>
         </Container>
