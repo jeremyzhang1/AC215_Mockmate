@@ -158,7 +158,7 @@ Here are all the containers in the GCP container registry:
 
 Here is our deployed app on a K8s cluster in GCP:
 
-![assets/vm_instances.png](assets/vm_instances.png)
+![assets/vm_instances.png](assets/vm_instances.PNG)
 
 ![assets/kube.png](assets/kube.png)
 
