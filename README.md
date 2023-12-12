@@ -109,13 +109,54 @@ In this project, our goal is to build an application that can simulate software 
 
 ## Milestone 6 ##
 
-**CI/CD Pipelines**
-
-TODO
-
 **Kubernetes Scaling Solution**
 
-TODO
+We created a `deployment` container that handles all of the ansible deployments (detailed in the previous milestones) and the automated Kubernetes scaling.
+
+Run `deployment` container:
+- cd into `deployment`
+- Go into `docker-shell.sh` or `docker-shell.bat` and change `GCP_PROJECT` to your project id
+- Run `sh docker-shell.sh` or `docker-shell.bat` for windows
+
+Build and Push Docker Containers to GCR (Google Container Registry):
+```
+ansible-playbook deploy-docker-images.yml -i inventory.yml
+```
+
+Create & Deploy Cluster:
+
+Run this step if you do not have a Kubernetes cluster running.
+```
+ansible-playbook deploy-k8s-cluster.yml -i inventory.yml --extra-vars cluster_state=present
+```
+
+View the App:
+* Copy the `nginx_ingress_ip` from the terminal from the create cluster command
+* Go to `http://<YOUR INGRESS IP>.sslip.io`
+
+* Our app can be found at: http://35.226.226.64.sslip.io/ (Note that the link may be inactive since we shut down the cluster to save on compute costs)
+
+Delete Cluster:
+
+After recording the demo and taking the relevant screenshots, remember to shut down and delete the cluster to avoid a huge cloud bill.
+
+```
+ansible-playbook deploy-k8s-cluster.yml -i inventory.yml --extra-vars cluster_state=absent
+```
+
+ **CI/CD Pipelines**
+
+#### Setup
+
+* Go to the repo Settings
+* Select "Secrets and variable" from the left side menu and select "Actions"
+* Under "Repository secrets" click "New repository secret"
+* Give the name as "GOOGLE_APPLICATION_CREDENTIALS"
+* For the value copy+paste the contents of your secrets file `deployment.json`
+
+Finally we added CI/CD using GitHub Actions, such that we can trigger deployment or any other pipeline using GitHub Events. Our yaml files can be found under `.github/workflows`
+
+`cicd.yml` - This workflow auomates the creation of the `deployment` container as well as automating some of the key repetitive steps of deployment. Namely, this will rebuild all the docker images, push these updated docker images to GCR, and update the kubernetes deployments.
 
 ## Milestone 5 ##
 
