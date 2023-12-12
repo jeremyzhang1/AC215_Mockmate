@@ -38,11 +38,17 @@ src/
 │  ├─ leetcode_dataset_embeddings.dvc  
 │  └─ requirements.txt
 ├─ deployment/
+|  ├─ nginx-conf/
+|  |  └─ nginx.conf
 |  ├─ deploy-create-instance.yml
 |  ├─ deploy-docker-images.yml
+|  ├─ deploy-k8s-cluster.yml
 |  ├─ deploy-provision-instance.yml
 |  ├─ deploy-setup-containers.yml
 |  ├─ deploy-setup-webserver.yml
+|  ├─ docker-entrypoint.sh
+|  ├─ docker-shell.sh
+|  ├─ Dockerfile
 |  └─ inventory.yml
 ├─ frontend/
 |  ├─ node_modules/
@@ -111,7 +117,9 @@ In this project, our goal is to build an application that can simulate software 
 
 **Kubernetes Scaling Solution**
 
-We created a `deployment` container that handles all of the ansible deployments (detailed in the previous milestones) and the automated Kubernetes scaling.
+We created a `deployment` container that handles all of the ansible deployments (detailed in the previous milestone) and the automated Kubernetes scaling.
+
+Our kubernetes cluster helped us automatically take care of load balancing and failover, making deployment and maintainence a lot simpler on our end. We used ansible scripts such as `deploy-k8s-cluster.yml` to manage the provisioning and updating of our kubernetes cluster.
 
 Run `deployment` container:
 - cd into `deployment`
@@ -143,6 +151,20 @@ After recording the demo and taking the relevant screenshots, remember to shut d
 ```
 ansible-playbook deploy-k8s-cluster.yml -i inventory.yml --extra-vars cluster_state=absent
 ```
+
+Here are all the containers in the GCP container registry:
+
+![assets/container_registry.PNG](assets/container_registry.PNG)
+
+Here is our deployed app on a K8s cluster in GCP:
+
+![assets/vm_instances.png](assets/vm_instances.png)
+
+![assets/kube.png](assets/kube.png)
+
+Google cloud also provides a comprehensive dashboard for monitoring the performance of our cluster in real time:
+
+![assets/monitoring1.png](assets/monitoring1.PNG)
 
  **CI/CD Pipelines**
 
