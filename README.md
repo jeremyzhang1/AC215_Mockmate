@@ -7,7 +7,7 @@ AC215_Mockmate
 
 ### Blog Post Link ###
 
-* 
+* [https://medium.com/@zhang.jeremy.2001/mockmate-ai-powered-technical-job-interview-preparation-c72740da6560](https://medium.com/@zhang.jeremy.2001/mockmate-ai-powered-technical-job-interview-preparation-c72740da6560)
 
 Project Organization
 ------------
